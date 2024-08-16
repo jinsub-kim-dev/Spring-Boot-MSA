@@ -1,6 +1,7 @@
 package com.example.userservice.security
 
 import com.example.userservice.service.UserService
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -17,18 +18,19 @@ class WebSecurity(
     private val env: Environment
 ) : WebSecurityConfigurerAdapter() {
 
+    val log = LoggerFactory.getLogger(this::class.java)
+
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
             .antMatchers("/**").permitAll()
             .and()
             .addFilter(getAuthenticationFilter())
 
-
         http.csrf().disable()
     }
 
     private fun getAuthenticationFilter(): AuthenticationFilter {
-        val authenticationFilter = AuthenticationFilter()
+        val authenticationFilter = AuthenticationFilter(userService, env)
         authenticationFilter.setAuthenticationManager(authenticationManager())
 
         return authenticationFilter

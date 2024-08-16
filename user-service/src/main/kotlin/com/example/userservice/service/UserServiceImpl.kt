@@ -43,6 +43,14 @@ class UserServiceImpl(
         return this.userRepository.findAll()
     }
 
+    override fun getUserDetailsByEmail(username: String): UserDto {
+        val userEntity = this.userRepository.findByEmail(username)
+            ?: throw UsernameNotFoundException("User not found")
+
+        val userDto = ModelMapper().map(userEntity, UserDto::class.java)
+        return userDto
+    }
+
     override fun loadUserByUsername(username: String): UserDetails {
         val userEntity = this.userRepository.findByEmail(username)
             ?: throw UsernameNotFoundException("User not found")

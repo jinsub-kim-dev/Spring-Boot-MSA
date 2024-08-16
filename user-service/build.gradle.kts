@@ -32,6 +32,8 @@ dependencies {
 
     runtimeOnly("com.h2database:h2:1.3.148")
     implementation("org.modelmapper:modelmapper:2.3.8")
+
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
 }
 
 dependencyManagement {
