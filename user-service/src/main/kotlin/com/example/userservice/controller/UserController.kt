@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/user-service")
+@RequestMapping("/")
 class UserController(
         private val environment: Environment,
         private val greeting: Greeting,

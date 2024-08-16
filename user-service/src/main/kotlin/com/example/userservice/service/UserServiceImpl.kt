@@ -5,6 +5,8 @@ import com.example.userservice.jpa.UserEntity
 import com.example.userservice.jpa.UserRepository
 import com.example.userservice.vo.ResponseOrder
 import org.modelmapper.ModelMapper
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -39,5 +41,13 @@ class UserServiceImpl(
 
     override fun getUserByAll(): Iterable<UserEntity> {
         return this.userRepository.findAll()
+    }
+
+    override fun loadUserByUsername(username: String): UserDetails {
+        val userEntity = this.userRepository.findByEmail(username)
+            ?: throw UsernameNotFoundException("User not found")
+
+        return User(userEntity.email, userEntity.encryptedPwd,
+            true, true, true, true, listOf())
     }
 }
