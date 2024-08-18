@@ -31,7 +31,7 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-
-token:
-  expiration_time: 86400000
-  secret: my_secret
+# Spring cloud config로 이관
+#token:
+#  expiration_time: 86400000
+#  secret: my_secret
