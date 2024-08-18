@@ -8,4 +8,5 @@ spring:
     config:
       server:
         git:
-          uri: file:///D:/Dev/git-local-repo
+          uri: https://github.com/jinsub-kim-dev/Spring-Boot-MSA
+          searchPaths: tree/main/spring-cloud-config
