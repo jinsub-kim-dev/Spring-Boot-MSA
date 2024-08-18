@@ -21,12 +21,13 @@ class WebSecurity(
     val log = LoggerFactory.getLogger(this::class.java)
 
     override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .antMatchers("/**").permitAll()
+        http.csrf().disable()
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll()
+        http.authorizeRequests().antMatchers("/**").permitAll()
             .and()
             .addFilter(getAuthenticationFilter())
 
-        http.csrf().disable()
+        http.headers().frameOptions().disable()
     }
 
     private fun getAuthenticationFilter(): AuthenticationFilter {

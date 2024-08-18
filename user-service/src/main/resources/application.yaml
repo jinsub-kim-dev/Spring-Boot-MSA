@@ -31,6 +31,13 @@ logging:
   level:
     com.example.userservice: DEBUG
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
+
 # Spring cloud config로 이관
 #token:
 #  expiration_time: 86400000
