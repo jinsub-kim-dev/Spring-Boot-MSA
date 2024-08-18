@@ -1,0 +1,3 @@
+token:
+  secret: my_token_prod
+  expiration_time: 86400000
