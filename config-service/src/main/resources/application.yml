@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     config:
       server:
@@ -13,3 +18,9 @@ spring:
           username: jinsub-kim-dev
           password: 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
           default-label: main
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
