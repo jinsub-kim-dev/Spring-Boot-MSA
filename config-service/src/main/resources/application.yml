@@ -9,4 +9,7 @@ spring:
       server:
         git:
           uri: https://github.com/jinsub-kim-dev/Spring-Boot-MSA
-          searchPaths: tree/main/spring-cloud-config
+          searchPaths: spring-cloud-config
+          username: jinsub-kim-dev
+          password: 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
+          default-label: main
