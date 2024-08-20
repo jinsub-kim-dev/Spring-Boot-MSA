@@ -1,9 +1,11 @@
 token:
   secret: my_token_default
   expiration_time: 86400000
-  username: sa
-  password: '${cipher}47934fbf73a270c866715a9b643c3af9c1f031320fcd616c841ec9289468d521'
+  
 
-datasource:
-  driver-class-name: org.h2.Driver
-  url: jdbc:h2:mem:testdb
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: '${cipher}47934fbf73a270c866715a9b643c3af9c1f031320fcd616c841ec9289468d521'
