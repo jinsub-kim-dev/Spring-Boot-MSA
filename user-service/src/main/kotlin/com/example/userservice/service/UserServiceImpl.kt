@@ -5,8 +5,9 @@ import com.example.userservice.dto.UserDto
 import com.example.userservice.jpa.UserEntity
 import com.example.userservice.jpa.UserRepository
 import com.example.userservice.vo.ResponseOrder
+import feign.FeignException
 import org.modelmapper.ModelMapper
-import org.springframework.core.ParameterizedTypeReference
+import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.http.HttpMethod
 import org.springframework.security.core.userdetails.User
@@ -26,6 +27,8 @@ class UserServiceImpl(
     private val restTemplate: RestTemplate,
     private val orderServiceClient: OrderServiceClient
 ) : UserService {
+
+    val log = LoggerFactory.getLogger(this::class.java)
 
     override fun createUser(userDto: UserDto): UserDto {
         userDto.userId = UUID.randomUUID().toString()
@@ -54,6 +57,17 @@ class UserServiceImpl(
 //        userDto.orders = orderList!!
 
         /* Using as FeignClient */
+        /* Feign exception handling */
+//        var orderList: List<ResponseOrder> = listOf()
+//        try {
+//            orderList = this.orderServiceClient.getOrders(userId)
+//        } catch (e: FeignException) {
+//            log.error(e.message)
+//        }
+//        userDto.orders = orderList
+
+        /* Using as FeignClient */
+        /* Feign error decoder */
         val orderList = this.orderServiceClient.getOrders(userId)
         userDto.orders = orderList
 
