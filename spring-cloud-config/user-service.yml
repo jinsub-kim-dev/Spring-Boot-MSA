@@ -9,3 +9,7 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
     password: '{cipher}47934fbf73a270c866715a9b643c3af9c1f031320fcd616c841ec9289468d521'
+
+
+order_service:
+  url: http://127.0.0.1:8000/order-service/${userId}/orders
