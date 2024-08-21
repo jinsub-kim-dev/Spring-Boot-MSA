@@ -1,5 +1,6 @@
 package com.example.userservice.service
 
+import com.example.userservice.client.OrderServiceClient
 import com.example.userservice.dto.UserDto
 import com.example.userservice.jpa.UserEntity
 import com.example.userservice.jpa.UserRepository
@@ -18,11 +19,12 @@ import java.util.UUID
 
 @Service
 class UserServiceImpl(
-        private val env: Environment,
-        private val userRepository: UserRepository,
-        private val modelMapper: ModelMapper,
-        private val passwordEncoder: BCryptPasswordEncoder,
-        private val restTemplate: RestTemplate
+    private val env: Environment,
+    private val userRepository: UserRepository,
+    private val modelMapper: ModelMapper,
+    private val passwordEncoder: BCryptPasswordEncoder,
+    private val restTemplate: RestTemplate,
+    private val orderServiceClient: OrderServiceClient
 ) : UserService {
 
     override fun createUser(userDto: UserDto): UserDto {
@@ -44,12 +46,16 @@ class UserServiceImpl(
 //        userDto.orders = orders
 
         /* Using as RestTemplate */
-        val orderUrl = String.format(env.getProperty("order_service.url") ?: "", userId)
-        val orderListResponse = this.restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-            object: ParameterizedTypeReference<List<ResponseOrder>>() {})
+//        val orderUrl = String.format(env.getProperty("order_service.url") ?: "", userId)
+//        val orderListResponse = this.restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//            object: ParameterizedTypeReference<List<ResponseOrder>>() {})
+//
+//        val orderList = orderListResponse.body
+//        userDto.orders = orderList!!
 
-        val orderList = orderListResponse.body
-        userDto.orders = orderList!!
+        /* Using as FeignClient */
+        val orderList = this.orderServiceClient.getOrders(userId)
+        userDto.orders = orderList
 
         return userDto
     }
