@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable
 @FeignClient(name = "order-service")
 interface OrderServiceClient {
 
-    @GetMapping("/order-service/{userId}/orders_ng")
+    @GetMapping("/order-service/{userId}/orders")
     fun getOrders(@PathVariable userId: String): List<ResponseOrder>
 }
