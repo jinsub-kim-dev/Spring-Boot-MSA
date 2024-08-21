@@ -5,18 +5,24 @@ import com.example.userservice.jpa.UserEntity
 import com.example.userservice.jpa.UserRepository
 import com.example.userservice.vo.ResponseOrder
 import org.modelmapper.ModelMapper
+import org.springframework.core.ParameterizedTypeReference
+import org.springframework.core.env.Environment
+import org.springframework.http.HttpMethod
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
 import java.util.UUID
 
 @Service
 class UserServiceImpl(
+        private val env: Environment,
         private val userRepository: UserRepository,
         private val modelMapper: ModelMapper,
-        private val passwordEncoder: BCryptPasswordEncoder
+        private val passwordEncoder: BCryptPasswordEncoder,
+        private val restTemplate: RestTemplate
 ) : UserService {
 
     override fun createUser(userDto: UserDto): UserDto {
@@ -33,8 +39,17 @@ class UserServiceImpl(
         val userEntity = this.userRepository.findByUserId(userId) ?: throw UsernameNotFoundException("User not found")
         val userDto = modelMapper.map(userEntity, UserDto::class.java)
 
-        val orders: MutableList<ResponseOrder> = mutableListOf()
-        userDto.orders = orders
+        /* Without Communication */
+//        val orders: MutableList<ResponseOrder> = mutableListOf()
+//        userDto.orders = orders
+
+        /* Using as RestTemplate */
+        val orderUrl = String.format(env.getProperty("order_service.url") ?: "", userId)
+        val orderListResponse = this.restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+            object: ParameterizedTypeReference<List<ResponseOrder>>() {})
+
+        val orderList = orderListResponse.body
+        userDto.orders = orderList!!
 
         return userDto
     }
