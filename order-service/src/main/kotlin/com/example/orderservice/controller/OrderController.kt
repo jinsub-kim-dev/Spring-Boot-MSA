@@ -2,6 +2,7 @@ package com.example.orderservice.controller
 
 import com.example.orderservice.dto.OrderDto
 import com.example.orderservice.messagequeue.KafkaProducer
+import com.example.orderservice.messagequeue.OrderProducer
 import com.example.orderservice.service.OrderService
 import com.example.orderservice.vo.RequestOrder
 import com.example.orderservice.vo.ResponseOrder
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 
 @RestController
@@ -23,7 +25,8 @@ class OrderController(
     private val env: Environment,
     private val orderService: OrderService,
     private val modelMapper: ModelMapper,
-    private val kafkaProducer: KafkaProducer
+    private val kafkaProducer: KafkaProducer,
+    private val orderProducer: OrderProducer
 ) {
 
     @GetMapping("/health_check")
@@ -38,11 +41,18 @@ class OrderController(
         orderDto.userId = userId
 
         /* jpa */
-        val createdOrder = this.orderService.createOrder(orderDto)
-        val responseOrder = this.modelMapper.map(createdOrder, ResponseOrder::class.java)
+//        val createdOrder = this.orderService.createOrder(orderDto)
+//        val responseOrder = this.modelMapper.map(createdOrder, ResponseOrder::class.java)
+
+        /* kafka */
+        orderDto.orderId = UUID.randomUUID().toString()
+        orderDto.totalPrice = orderDetails.qty * orderDetails.unitPrice
 
         /* send this order to kafka */
         this.kafkaProducer.send("example-catalog-topic", orderDto)
+        this.orderProducer.send("orders", orderDto)
+
+        val responseOrder = this.modelMapper.map(orderDto, ResponseOrder::class.java)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder)
     }
