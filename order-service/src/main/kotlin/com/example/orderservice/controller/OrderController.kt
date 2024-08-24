@@ -1,6 +1,7 @@
 package com.example.orderservice.controller
 
 import com.example.orderservice.dto.OrderDto
+import com.example.orderservice.messagequeue.KafkaProducer
 import com.example.orderservice.service.OrderService
 import com.example.orderservice.vo.RequestOrder
 import com.example.orderservice.vo.ResponseOrder
@@ -22,6 +23,7 @@ class OrderController(
     private val env: Environment,
     private val orderService: OrderService,
     private val modelMapper: ModelMapper,
+    private val kafkaProducer: KafkaProducer
 ) {
 
     @GetMapping("/health_check")
@@ -35,9 +37,12 @@ class OrderController(
         val orderDto = this.modelMapper.map(orderDetails, OrderDto::class.java)
         orderDto.userId = userId
 
-        // jpa
+        /* jpa */
         val createdOrder = this.orderService.createOrder(orderDto)
         val responseOrder = this.modelMapper.map(createdOrder, ResponseOrder::class.java)
+
+        /* send this order to kafka */
+        this.kafkaProducer.send("example-catalog-topic", orderDto)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder)
     }
