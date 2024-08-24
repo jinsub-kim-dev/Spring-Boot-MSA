@@ -8,6 +8,7 @@ import com.example.userservice.vo.ResponseOrder
 import feign.FeignException
 import org.modelmapper.ModelMapper
 import org.slf4j.LoggerFactory
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory
 import org.springframework.core.env.Environment
 import org.springframework.http.HttpMethod
 import org.springframework.security.core.userdetails.User
@@ -25,7 +26,8 @@ class UserServiceImpl(
     private val modelMapper: ModelMapper,
     private val passwordEncoder: BCryptPasswordEncoder,
     private val restTemplate: RestTemplate,
-    private val orderServiceClient: OrderServiceClient
+    private val orderServiceClient: OrderServiceClient,
+    private val circuitBreakerFactory: CircuitBreakerFactory<*, *>
 ) : UserService {
 
     val log = LoggerFactory.getLogger(this::class.java)
@@ -68,7 +70,14 @@ class UserServiceImpl(
 
         /* Using as FeignClient */
         /* Feign error decoder */
-        val orderList = this.orderServiceClient.getOrders(userId)
+//        val orderList = this.orderServiceClient.getOrders(userId)
+
+
+        val circuitBreaker = circuitBreakerFactory.create("circutbreaker")
+        val orderList = circuitBreaker.run(
+            { orderServiceClient.getOrders(userId) },
+            { throwable -> listOf() }
+        )
         userDto.orders = orderList
 
         return userDto
