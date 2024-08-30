@@ -21,28 +21,37 @@ repositories {
 extra["springCloudVersion"] = "2020.0.0"
 
 dependencies {
+    /* Spring boot initialization */
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    /* Spring Cloud */
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-bus-amqp")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
     implementation("org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+
+    /* Datasource */
+    runtimeOnly("com.h2database:h2:1.3.148")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    /* JWT */
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+    /* Micrometer */
     implementation("io.micrometer:micrometer-registry-prometheus")
 
-    runtimeOnly("com.h2database:h2:1.3.148")
+    /* Util */
     implementation("org.modelmapper:modelmapper:2.3.8")
-
-    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 dependencyManagement {

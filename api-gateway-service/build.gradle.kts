@@ -21,24 +21,28 @@ repositories {
 extra["springCloudVersion"] = "2020.0.0"
 
 dependencies {
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-	implementation("org.springframework.cloud:spring-cloud-starter-config")
-	implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
-	implementation("org.springframework.cloud:spring-cloud-starter-bus-amqp")
+	/* Spring boot initialization */
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("io.netty:netty-resolver-dns-native-macos")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-	implementation("io.netty:netty-resolver-dns-native-macos")
+	/* Spring Cloud */
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	implementation("org.springframework.cloud:spring-cloud-starter-config")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+	implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
+	implementation("org.springframework.cloud:spring-cloud-starter-bus-amqp")
 
+	/* Micrometer */
+	implementation("io.micrometer:micrometer-registry-prometheus")
+
+	/* Util */
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 	implementation("com.sun.xml.bind:jaxb-impl:4.0.1")
 	implementation("com.sun.xml.bind:jaxb-core:4.0.1")
 	implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
-
-	implementation("io.micrometer:micrometer-registry-prometheus")
 }
 
 dependencyManagement {

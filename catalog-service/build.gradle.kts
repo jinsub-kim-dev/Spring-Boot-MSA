@@ -22,17 +22,24 @@ repositories {
 extra["springCloudVersion"] = "2020.0.0"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	/* Spring boot initialization */
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.h2database:h2:1.3.148")
-	implementation("org.modelmapper:modelmapper:2.3.8")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+	/* Spring Cloud */
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
+	/* Datasource */
+	runtimeOnly("com.h2database:h2:1.3.148")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+	/* Util */
+	implementation("org.modelmapper:modelmapper:2.3.8")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+	/* Kafka */
 	implementation("org.springframework.kafka:spring-kafka")
 }
 

@@ -22,24 +22,33 @@ repositories {
 extra["springCloudVersion"] = "2020.0.0"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	/* Spring boot initialization */
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-	implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
-	implementation("org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.h2database:h2:1.3.148")
-	implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
-	implementation("org.modelmapper:modelmapper:2.3.8")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+	/* Spring Cloud */
+	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+	implementation("org.springframework.cloud:spring-cloud-starter-zipkin:2.2.3.RELEASE")
+
+	/* Datasource */
+	runtimeOnly("com.h2database:h2:1.3.148")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.mariadb.jdbc:mariadb-java-client:2.7.2")
+
+	/* Kafka */
 	implementation("org.springframework.kafka:spring-kafka")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+	/* Micrometer */
 	implementation("io.micrometer:micrometer-registry-prometheus")
+
+	/* Util */
+	implementation("org.modelmapper:modelmapper:2.3.8")
 }
 
 dependencyManagement {

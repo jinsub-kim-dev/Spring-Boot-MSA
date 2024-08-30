@@ -21,6 +21,7 @@ spring:
   cloud:
     gateway:
       routes:
+        # User Service
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -54,14 +55,20 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+
+        # Catalog Service
         - id: catalog-service
           uri: lb://CATALOG-SERVICE
           predicates:
             - Path=/catalog-service/**
+
+        # Order Service
         - id: order-service
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order-service/**
+
+        # Test Service
         - id: first-service
           uri: lb://MY-FIRST-SERVICE
           predicates:
