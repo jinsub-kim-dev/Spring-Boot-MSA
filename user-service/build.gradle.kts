@@ -37,6 +37,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 
     runtimeOnly("com.h2database:h2:1.3.148")
     implementation("org.modelmapper:modelmapper:2.3.8")

@@ -5,6 +5,7 @@ import com.example.userservice.service.UserService
 import com.example.userservice.vo.Greeting
 import com.example.userservice.vo.RequestUser
 import com.example.userservice.vo.ResponseUser
+import io.micrometer.core.annotation.Timed
 import org.modelmapper.ModelMapper
 import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
@@ -26,6 +27,7 @@ class UserController(
 ) {
 
     @GetMapping("/health_check")
+    @Timed(value = "user.status", longTask = true)
     public fun status(): String {
         return "It's Working in User Service" +
                 " port(local.server.port)= ${environment.getProperty("local.server.port")}" +
@@ -35,6 +37,7 @@ class UserController(
     }
 
     @GetMapping("/welcome")
+    @Timed(value = "user.welcome", longTask = true)
     public fun welcome(): String? {
         return greeting.message
     }
