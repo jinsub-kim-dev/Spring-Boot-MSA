@@ -39,6 +39,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	implementation("org.springframework.kafka:spring-kafka")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 }
 
 dependencyManagement {
